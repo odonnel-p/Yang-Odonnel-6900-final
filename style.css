@@ -13,6 +13,7 @@ html,body{
 
 .intro_text > h1{
     padding-top: 20px;
+    margin-top: 30px;
 }
 
 .intro_text > *{
@@ -23,6 +24,11 @@ html,body{
 
 .intro_text > h2 {
     margin-bottom: 20px;
+}
+
+.subtitle
+{
+
 }
 
 /*-------------------Map---------------*/
@@ -40,7 +46,7 @@ html,body{
 
 .neighborhoods {
     stroke: #fff;
-    fill: rgb(210,210,210);
+    fill: #eee;
     stroke-linejoin: 'round';
     stroke-width: .5;
 }
@@ -64,7 +70,7 @@ html,body{
 }
 
 .author{
-    margin-top: 10%;
+    margin-top: 10.6%;
     width: 20%;
     float: right;
 }

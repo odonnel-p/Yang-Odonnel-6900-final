@@ -44,7 +44,7 @@ dispatcherStation.on('getarray',function(array, stations, longlat, s){
 
 //PATRICK'S GLOBAL VARIABLES
 var width = d3.select('#plot').node().clientWidth,
-    height = d3.select('#plot').node().clientHeight,
+    height = d3.select('#plot').node().clientHeight-80,
     centered, mapped_trips,
     zoomed = false,
     switch_a = false,
@@ -79,9 +79,9 @@ var g = svg.append( "g" );
 
 //PROJECTION
 var albersProjection = d3.geo.albers()
-    .scale( 260000 )
+    .scale( 310000 )
     .rotate( [71.087,0] )
-    .center( [0, 42.33] )
+    .center( [0, 42.3575] )
     .translate( [width/2,height/2] );
 
 //DRAWING THE PATHS OF geoJSON OBJECTS
@@ -97,7 +97,8 @@ var geoPath = d3.geo.path()
 function draw_triangles(array, stations, longlat, start_boolean) {
     //console.log(array);
     //console.log(longlat);
-    //console.log(stations);
+
+    
 
     g.selectAll('polygon').remove();
 
@@ -183,8 +184,7 @@ d3_queue.queue()
 
 
 function dataLoaded(err, rows, stations, bos, cam, som, bro){
-
-    //console.log(stations);
+        
 
     //Look-up table of station ID and name
     var stationNameID = d3.map(stations, function(d){return d.id;});
@@ -355,10 +355,11 @@ function dataLoaded(err, rows, stations, bos, cam, som, bro){
         console.log(this);
         var stationID = this.value;
         
-
+        //reset colors
         d3.selectAll('.station_dot').style('fill', 'rgb(32,96,255)');
-        //d3.select('[station_num='+stationID+']').style('fill', 'orange');
-        d3.select('.station_dot').select('[station_num='+stationID+']').style('fill', 'orange');
+       
+        
+        d3.selectAll('.station_dot').select('[station_num='+stationID.toString()+']').style('fill', 'orange');
 
         selectStation(stationID);
 
@@ -417,7 +418,6 @@ function dataLoaded(err, rows, stations, bos, cam, som, bro){
         .append('circle')
         .attr('class', 'station_dot')
         .attr('station_num', function(d) { return d.id })
-        .attr('id', function(d) { return d.fullName })
         .attr('cx', function(d) {
             var xy = albersProjection(d.lngLat);
             return xy[0]; })
@@ -436,21 +436,24 @@ function dataLoaded(err, rows, stations, bos, cam, som, bro){
     //END OF STATIONS ON MAP
 
     svg.append('rect')
-        .attr('x', 300)
-        .attr('y', 662)
+        .attr('class','substitle')
         .attr('height', 30)
         .attr('width', 400)
         .style('fill', "#ffffff")
         .style('opacity', .75)
-
+        .attr('x', 670)
+        .attr('y', 570)
+            
     svg.append('text')
-        .text('Boston, Brookline, Cambridge, Sommerville')
-        .attr("font-family", "serif")
-        .attr("font-size", "20px")
-        .attr("fill", "black")
-        .attr("font-weight", "bold")
-        .attr('x', 310)
-        .attr('y', 682);
+                .attr('x', 680)
+                .attr('y', 591)
+                .text('Boston, Brookline, Cambridge, Somerville')
+                .attr("font-family", "serif")
+                .attr("font-size", "18px")
+                .attr('font-style', 'oblique')
+                .attr("fill", "black")
+                .attr('class','substitle');
+
 
 
 } //end of dataLoaded
@@ -575,10 +578,11 @@ function parseTime(t){
 }
 
 function parseStations(s){
+
     d3.select('.station')
-        .append('option')
-        .html(s.station)
-        .attr('value', s.id);
+            .append('option')
+            .html(s.station)
+            .attr('value', +s.id);
 
     return {
         id: s.id,
